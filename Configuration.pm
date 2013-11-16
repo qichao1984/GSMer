@@ -3,7 +3,7 @@
 #
 #         FILE: Configuration.pm
 #
-#  DESCRIPTION:
+#  DESCRIPTION: Configuration file for GSM identification
 #
 #        FILES: Configuration.pm
 #         BUGS: ---
@@ -37,19 +37,27 @@ package Configuration;
   #####
 
   ##dir for k-mer databases, gbk files, output dir
+  #k-mer database directory
   $merdbdir = "merdb_strain";
+  #gbk file directory
   $gbkdir   = "gbk";
-  $probedir   = "probe_species_gut";#marker output dir
+  #marker output directory
+  $probedir   = "probe_species_gut";
+  #blast database directory
   $blastdbdir   = "blastdb";
-  ## ROOT DIRECTORY FOR ANALYSIS (absolute pathname required)
+  ## ROOT DIRECTORY FOR ANALYSIS 
   $root_directory = ".";
-  ## multi-core
+  ## multi-core support
   $threads = "35";
   ##probe length, stretch, identity etc
-  $k                     = 18;
+  #k-mer size for stretch filtering
+  $k                     = 18; 
+  #marker length
   $probe_length          = 50;
+  #continuous stretch cutoff
   $stretch_cutoff        = 20;
-  $identity_cutoff       = 90;
+  #sequence identity cutoff
+  $identity_cutoff       = 85;
 }
 
 1;
