@@ -8,7 +8,7 @@
 #        FILES: Configuration.pm
 #         BUGS: ---
 #        NOTES: set program path and parameters here for GSM identification
-#       AUTHOR: Qichao Tu
+#       AUTHOR: Qichao Tu (qichao@ou.edu, philloid@gmail.com)
 #  INSTITUTION: Institute for Environmental Genomics, University of Oklahoma
 #      VERSION: 1.0
 #      CREATED: 11/16/2013 5:11:38 PM
