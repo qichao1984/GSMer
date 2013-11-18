@@ -42,7 +42,7 @@ This tutorial shows how to identify GSMs for E.coli O157 with E.coli K12 genome 
    This step generate all candidate GSMs for O157 strains.  
 5. perl GSMer.pl -m mapgsm  
    This step maps the above candidate GSMs to the k-mer database for continuous stretch filtering.  
-6. perl GSMer.pl -m blastgsm 
+6. perl GSMer.pl -m blastgsm  
    This step performs blast searching unmapped GSMs against the blast database.  
 7. perl GSMer.pl -m checkspecificity
    This step filters GSMs based the blast output for continuous stretch and identity with non-target genomes. Four *.out files containing detailed information of O157-specific GSMs will be generated in the GSM output directory specified in the Configuration.pm file.
