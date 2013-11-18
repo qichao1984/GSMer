@@ -45,5 +45,5 @@ A total of seven steps are required for GSM identification, and need to run one 
    This step maps the above candidate GSMs to the k-mer database for continuous stretch filtering.  
 6. *perl GSMer.pl -m blastgsm*  
    This step performs blast searching unmapped GSMs against the blast database.  
-7. *perl GSMer.pl -m checkspecificity*
+7. *perl GSMer.pl -m checkspecificity*  
    This step filters GSMs based the blast output for continuous stretch and identity with non-target genomes. Four *.out files containing detailed information of O157-specific GSMs will be generated in the GSM output directory specified in the Configuration.pm file.
