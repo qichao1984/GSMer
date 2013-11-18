@@ -23,7 +23,7 @@ http://kmer.sourceforge.net
 Tutorial:
 -----------------------------------------------------------------------
 This tutorial shows how to identify GSMs for E.coli O157 with E.coli K12 genome as alien.  
-A total of seven steps are required for GSM identification, and need to run one by one. For details of the required options, please run *perl GSMer.pl -m help*.  
+A total of seven steps are required for GSM identification, and need to run one by one. For details of all available options, please run *perl GSMer.pl -m help*.  
 <dl>
 <dt>Testing files:</dt>
 </dl>
