@@ -16,6 +16,9 @@ http://ieg.ou.edu/GSMer/allgsm_strain.zip
 * Randomly selected upto 50 GSMs/strain from different regions: 
 http://ieg.ou.edu/GSMer/gsm_strain.select50.strains.zip
 
+Full list of included microbial strains:
+* http://ieg.ou.edu/GSMer/strain.xlsx
+
 Dependencies:  
 -----------------------------------------------------------------------
 <dl>
