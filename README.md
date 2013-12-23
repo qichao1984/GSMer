@@ -2,6 +2,20 @@ GSMer
 =====
 GSMer devotes to identify genome-specific markers (GSMs) from currently sequenced microbial genomes using a k-mer based approach. Explored GSMs could be used to identify microbial strains/species in metagenomes, especially in human microbiome where many reference genomes are available. Two different levels of GSMs, including strain-specific and species-specifc GSMs are currently supported. 
 
+Identified GSMs
+=====
+Species-specific GSMs: 2,005 species (4,933 strains). 
+* All species-specific GSMs: 
+http://ieg.ou.edu/GSMer/allgsm_species.zip
+* Randomly selected upto 100 GSMs/strain from different regions:
+http://ieg.ou.edu/GSMer/gsm_species.select100.species.zip
+
+Strain-specific GSMs: 4,088 strains
+* All strain-specific GSMs:
+http://ieg.ou.edu/GSMer/allgsm_strain.zip
+* Randomly selected upto 50 GSMs/strain from different regions: 
+http://ieg.ou.edu/GSMer/gsm_strain.select50.strains.zip
+
 Dependencies:  
 -----------------------------------------------------------------------
 <dl>
