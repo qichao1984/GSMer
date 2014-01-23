@@ -57,7 +57,7 @@ A total of seven steps are required for GSM identification, and need to run one 
 </dl>
 0. Check the Configuration.pm file, and set tax level at 1, which represent strain level. Make sure all other program path and GSM criteria are correct.  
 1. *perl GSMer.pl -m splitgbk -i O157.gbk*  
-   This step split the O157.gbk file into four gbk files representing the four O157 strains. Four gbk files will be generated in a gbk directory. 
+   This step split the O157.gbk file into four gbk files representing the four O157 strains. Four gbk files will be generated in a gbk directory. A strain.list file will also be generated in the working directory. 
 2. *perl GSMer.pl -m makeblastdb -f1 k12.fa*  
    This step create a blast database file from all the four gbk files in the gbk directory, as well as the K-12 genome. 3. perl GSMer.pl -m makekmerdb -f1 k12.fa  
    This step create a k-mer database for all O157 genomes and k-12 genome. K-mers that show up in >=2 O157 genomes and all k-mers in K-12 genome are extracted for k-mer database construction.  
