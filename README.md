@@ -35,7 +35,7 @@ http://kmer.sourceforge.net
 <dl>
 <dt>Perl libraries:</dt>
 </dl>
-* Bio::SeqIO  
+* Bio::SeqIO (bioperl)  
 * Getopt::Long  
 * Parallel:ForkManager  
 * String::Random  
