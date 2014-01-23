@@ -4,7 +4,7 @@ GSMer devotes to identify genome-specific markers (GSMs) from currently sequence
 
 <dl>
 <dt>Citation</dt>
-<dt>Qichao Tu, Zhili He and Jizhong Zhou. “Strain/Species identification in metagenomes using genome-specific markers.” Nucleic Acid Research. (accepted)</dt>
+<dt>Qichao Tu, Zhili He and Jizhong Zhou. “Strain/Species identification in metagenomes using genome-specific markers.” Nucleic Acids Research. (accepted)</dt>
 </dl>
 
 Identified GSMs
