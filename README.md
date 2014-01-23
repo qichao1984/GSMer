@@ -2,10 +2,10 @@ GSMer
 =====
 GSMer devotes to identify genome-specific markers (GSMs) from currently sequenced microbial genomes using a k-mer based approach. Explored GSMs could be used to identify microbial strains/species in metagenomes, especially in human microbiome where many reference genomes are available. Two different levels of GSMs, including strain-specific and species-specifc GSMs are currently supported. 
 
-![alt text](http://ieg.ou.edu/mediawiki/images/f/f5/GSMer_pipeline.png "GSMer pipeline")
-
 ####Citation:
 #####Qichao Tu, Zhili He and Jizhong Zhou. “Strain/Species identification in metagenomes using genome-specific markers.” Nucleic Acids Research. (accepted)
+
+![alt text](http://ieg.ou.edu/mediawiki/images/f/f5/GSMer_pipeline.png "GSMer pipeline")
 
 Identified GSMs
 =====
