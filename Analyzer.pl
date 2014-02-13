@@ -3,11 +3,12 @@ use strict;
 use Getopt::Long;
 
 my (
-    $blastfile, $minidentity, $minlength, $maxmismatch,
-    $maxgap,    $normnum,     $bymethods, $outfile
+    $db,        $fasta,       $minidentity, $minlength, $maxmismatch,
+    $maxgap,    $normnum,     $bymethods,   $outfile
 );
 GetOptions(
-    "bf=s"   => \$blastfile,
+    "db=s"   => \$db,
+    "fa=s"   => \$fasta,
     "mi=s"   => \$minidentity,
     "ml=s"   => \$minlength,
     "mg=s"   => \$maxgap,
@@ -18,9 +19,11 @@ GetOptions(
 );
 
 if(!defined $blastfile || !defined $minidentity || !defined $minlength || !defined $maxgap || !defined $maxmismatch || !defined $normnum || !defined $bymethods || !defined $outfile){
-  die "Usage: GSMer.pl -bf <blastfile> -mi <minimum identity> -ml <minimum alignment length> -mg <maximum gap> -mm <maximum mismatch> -norm <normalization number> -by <normalization methods> -o <outfile>\n";
+  die "Usage: GSMer.pl -db <db file> -fa <fasta file> -mi <minimum identity> -ml <minimum alignment length> -mg <maximum gap> -mm <maximum mismatch> -norm <normalization number> -by <normalization methods> -o <outfile>\n";
 }
 
+my $blastfile="$fasta\.blast";
+system("megablast -d $db -i $fasta -m 8 -a 16 -p 90 -W 44 -o $blastfile");
 #print "$minidentity\t$minlength\t$maxgap\t$maxmismatch\t$normnum\t$bymethods\n";
 my ( %sumhit, %sumblast, %hit, %blast );
 open( BLAST, "$blastfile" ) || die "#1can not open $blastfile\n";
@@ -46,7 +49,7 @@ close BLAST;
 print keys %sumhit;
 
 my %strain;
-open(STRAIN,"/home/galaxy/galaxy-dist/tools/IEG/GSMer/strain.list")||die"#2 can not open strain.list\n";
+open(STRAIN,"strain.list")||die"#2 can not open strain.list\n";
 while(<STRAIN>){
   chomp;
   my @items=split("\t",$_);
