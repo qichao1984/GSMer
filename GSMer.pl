@@ -179,10 +179,10 @@ MAIN: {
     foreach my $gbk ( glob("$gbkdir/*gbk") ) {
       $gbk =~ /$gbkdir\/(.*?).gbk/;
       my $ij = $1;
-      if ( $tax == 0 ) {
+      if ( $tax == 1 ) {
         push( @{ $gbk{$ij} }, $gbk );
       }
-      if ( $tax == 1 ) {
+      if ( $tax == 2 ) {
         $ij =~ /(\d+)\_(\d+)/;
         my $i = $1;
         push( @{ $gbk{$i} }, $gbk );
@@ -631,8 +631,8 @@ sub CheckProbeSpecificity() {
     my $probe = $probes{$probeID};
     $probeID =~ /(\d+)\_(\d+)\-\d+/;
     my ( $i, $j ) = ( $1, $2 );
-    my $genomeID = $i if $tax == 1;
-    $genomeID = "$i\_$j" if $tax == 0;
+    my $genomeID = $i if $tax == 2;
+    $genomeID = "$i\_$j" if $tax == 1;
     my @positions;
     my @start;
     my @end;
@@ -789,8 +789,8 @@ sub ReadBLASTN() {
     my @items = split( "\t", $_ );
     $items[0] =~ /(\d+)\_(\d+)\-\d+/;
     my ( $i, $j ) = ( $1, $2 );
-    my $gid = $i if $tax == 1;
-    $gid = "$i\_$j" if $tax == 0;
+    my $gid = $i if $tax == 2;
+    $gid = "$i\_$j" if $tax == 1;
     if (
         !$blastn{ $items[0] }{ $items[1] }
       && $items[3] >= $stretch_cutoff
@@ -820,8 +820,8 @@ sub FetchSeqIDFromBLASTN() {
     $probeID =~ /(\d+)\_(\d+)\-\d+/;
     my $i        = $1;
     my $j        = $2;
-    my $genomeID = $i if $tax == 1;
-    $genomeID = "$i\_$j" if $tax == 0;
+    my $genomeID = $i if $tax == 2;
+    $genomeID = "$i\_$j" if $tax == 1;
 
     #push( @ids2, "$i\_$j" );
     foreach my $hit ( keys %{ $blastn{$probeID} } ) {
