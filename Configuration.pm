@@ -21,7 +21,7 @@ package Configuration;
   #
   # ENTER HERE THE PATH OF THE PROGRAMS
   # Make sure you do not accidently delete the semicolon at the end of the lines
-  ## level of specificity, 1 for species level, 0 for strain level
+  ## level of specificity, 2 for species level, 1 for strain level
   $tax=1;
 #####
   ##blastall exe file, blast search for similar non-targets
