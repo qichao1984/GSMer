@@ -55,7 +55,7 @@ A total of seven steps are required for GSM identification, and need to run one 
 <dl>
 <dt>Steps to run:</dt>
 </dl>
-0. Check the Configuration.pm file, and set tax level at 1, which represent strain level. Make sure all other program path and GSM criteria are correct. 
+0. Check the Configuration.pm file, and set tax level at 1, which represents strain level. Make sure all other program path and GSM criteria are correct. 
 1. `perl GSMer.pl -m splitgbk -i O157.gbk`  
    This step split the O157.gbk file into four gbk files representing the four O157 strains. Four gbk files will be generated in a gbk directory. A strain.list file will also be generated in the working directory. 
 2. `GSMer.pl -m makeblastdb -f1 k12.fa`  
