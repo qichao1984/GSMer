@@ -28,7 +28,7 @@ require 'Configuration.pm';
 ######################
 ##VARIABLES
 ######################
-my ( $exmode, $list, $infile );
+my ( $exmode, $list, $infile, $inf1file );
 
 GetOptions(
   "m=s"  => \$exmode,
@@ -92,17 +92,10 @@ mkdir $probedir unless ( -e $probedir );
 my $threads = $Configuration::threads || die "Please specify threads number\n";
 
 ######################
-##BEGIN
-######################
-BEGIN:{
-  &print_start();
-}
-######################
 ##MAIN
 ######################
 MAIN: {
   ##help and check input options
-  &printhelp() if !$exmode;
   &printhelp() if $exmode eq "help";
   if ( $exmode ne "splitgbk"
     && $exmode ne "readgbk"
@@ -113,16 +106,14 @@ MAIN: {
     && $exmode ne "blastgsm"
     && $exmode ne "checkspecificity" )
   {
-    die "unrecognized execution mode option: $exmode\n";
+    die "unrecognized execution mode option: $exmode\n", &printhelp();
   }
   ##split combined gbk file into strain/species level
   if ( $exmode eq "splitgbk" ) {
     if ( !$infile ) {
       die "Missing input genbank file!\n";
     }
-    print "Spliting $infile into strain/species level gbk files...\n";
-    %genomelist = &SplitGBKByTax( $infile, $gbkdir, $tax );
-    print "A total of ",scalar(keys %genomelist)," gbk files were generated!\n";
+    my %genomelist = &SplitGBKByTax( $infile, $gbkdir, $tax );
     open( LIST, ">strain.list" ) || die "# can not write strain.list";
     foreach my $strain ( keys %genomelist ) {
       print LIST "$strain\t$genomelist{$strain}\n";
@@ -132,9 +123,7 @@ MAIN: {
 
   ##read individual gbk file from gbk directory and generate strain.list file
   if ( $exmode eq "readgbk" ) {
-    print "Reading genbank files from $gbkdir...\n";
-    %genomelist = &ReadTaxFromGBK( $gbkdir, $tax );
-    print "A total of ",scalar(keys %genomelist)," gbk files were read!\n";
+    my %genomelist = &ReadTaxFromGBK( $gbkdir, $tax );
     open( LIST, ">strain.list" ) || die "# can not write strain.list";
     foreach my $strain ( keys %genomelist ) {
       print LIST "$strain\t$genomelist{$strain}\n";
@@ -145,7 +134,6 @@ MAIN: {
   ##make blast database from all microbial genomes and/or alien genomes (e.g. human genome)
   if ( $exmode eq "makeblastdb" ) {
     my $blastdbfile = "$blastdbdir/f1f2.all.fa";
-    print "Generating blast database from microbial genomes and/or alien genomes...\n";
     open( FA, ">$blastdbfile" ) || die "# can not write $blastdbfile\n";
     foreach my $gbk ( glob("$gbkdir/*gbk") ) {
       $gbk =~ /$gbkdir\/(.*?).gbk/;
@@ -168,12 +156,10 @@ MAIN: {
     }
     close FA;
     system("$formatdb -i $blastdbfile -p F");
-    print "Done formatting blast database $blastdbfile!\n";
   }
 
   ##make k-mer database from all microbial genomes and/or alien genomes (e.g. human genome)
   if ( $exmode eq "makekmerdb" ) {
-    print "Generating k-mer database from microbial genomes...\n";
     my $pm = new Parallel::ForkManager($threads);
     my %gbk;
     foreach my $gbk ( glob("$gbkdir/*gbk") ) {
@@ -202,9 +188,8 @@ MAIN: {
       $pm->finish;
     }
     $pm->wait_all_children;
-    
+
     ##merge kmer db
-    print "Merging strain/species level k-mer tables...\n";
     my $f1kmerdb     = "$merdbdir/f1all.k${k}";
     my $f2kmerdb     = "$merdbdir/f2all.k${k}";
     my $f2kmerdbn2fa = "$merdbdir/f2n2.k${k}.fa";
@@ -255,7 +240,6 @@ MAIN: {
 
     ##dump k-mers with frequency>=2, i.e. showing up in two or more strains
     if ( !-e $f2kmerdbn2fa ) {
-      print "Extracting k-mers showing up in >=2 microbial genomes...\n";
       system("$meryl -Dt -n 2 -s $f2kmerdb > $f2kmerdbn2fa");
       &GenerateKmerDB( $f2kmerdbn2fa, $f2kmerdbn2, $meryl, 10, $threads, $k );
     }
@@ -263,7 +247,6 @@ MAIN: {
     ##generate k-mer database for f1file that all k-mers were kept, combine with f2 kmer databse with frequency cutoffs
     if ( $inf1file ne "" ) {
       if ( !-e "$f1f2n2kmerdb.mcdat" ) {
-        print "Adding alien k-mers into the k-mer database...\n";
         &GenerateKmerDB( $inf1file, $f1kmerdb, $meryl, 10, $threads, $k );
         system("$meryl -M add -s $f2kmerdbn2 -s $f1kmerdb -o $f1f2n2kmerdb");
       }
@@ -271,7 +254,6 @@ MAIN: {
   }
   ##generate all candidate GSMs for interested microbial genomes
   if ( $exmode eq "getgsm" ) {
-    print "Generating candidate $probe_length bp genome-specific markers...\n";
     my %genomelist;
     open( LIST, "strain.list" ) || die "# can not open strain.list";
     while (<LIST>) {
@@ -307,7 +289,7 @@ MAIN: {
   ##map candidate GSMs to k-mer database for continuous stretch filtering
   if ( $exmode eq "mapgsm" ) {
     my $f1f2n2kmerdb;
-    print "Mapping GSMs to k-mer database for continuous stretch filtering...\n";
+
     #select which k-mer database should be used
     if ( -e "$merdbdir/f2n2_f1.k${k}.mcdat" ) {
       $f1f2n2kmerdb = "$merdbdir/f2n2_f1.k${k}";
@@ -362,7 +344,7 @@ MAIN: {
   ##run blast search unmapped GSMs for similarity based filtering
   if ( $exmode eq "blastgsm" ) {
     my $blastdbfile = "$blastdbdir/f1f2.all.fa";
-    print "Blast searching GSMs againt blast database...\n";
+
     my %genomelist;
     open( LIST, "strain.list" ) || die "# can not open strain.list";
     while (<LIST>) {
@@ -384,6 +366,7 @@ MAIN: {
     else {
       %list = %genomelist;
     }
+
     my $pm = new Parallel::ForkManager($threads);
     foreach my $strain ( keys %list ) {
       my $pid               = $pm->start and next;
@@ -406,7 +389,6 @@ MAIN: {
   }
   ##check GSM specificity
   if ( $exmode eq "checkspecificity" ) {
-    print "Cheking GSM specificity based on blast results...\n";
     my $blastdbfile = "$blastdbdir/f1f2.all.fa";
     my %genomelist;
     open( LIST, "strain.list" ) || die "# can not open strain.list";
@@ -458,7 +440,15 @@ sub SplitGBKByTax() {
   my $seqIO = Bio::SeqIO->new( -file => "$gbkfile", -format => "GenBank" );
   while ( my $seqobj = $seqIO->next_seq ) {
     my @organism    = $seqobj->species->classification;
+<<<<<<< HEAD
+<<<<<<< HEAD
+    my $strain      = $organism[ $tax - 1 ];
+=======
     my $strain      = $organism[$tax-1];
+>>>>>>> df8f82296d6a94e5ab1568870a32e2b152f72490
+=======
+    my $strain      = $organism[$tax-1];
+>>>>>>> df8f82296d6a94e5ab1568870a32e2b152f72490
     my @strainitems = split( " ", $strain );
     my $species     = "$strainitems[0] $strainitems[1]";
     my $outgbk;
@@ -506,7 +496,15 @@ sub ReadTaxFromGBK() {
     my $seqIO    = Bio::SeqIO->new( -file => "$file", -format => "GenBank" );
     my $seqobj   = $seqIO->next_seq;
     my @organism = $seqobj->species->classification;
+<<<<<<< HEAD
+<<<<<<< HEAD
+    my $strain   = $organism[ $tax - 1 ];
+=======
     my $strain   = $organism[$tax-1];
+>>>>>>> df8f82296d6a94e5ab1568870a32e2b152f72490
+=======
+    my $strain   = $organism[$tax-1];
+>>>>>>> df8f82296d6a94e5ab1568870a32e2b152f72490
     my %tmplist;
     $tmplist{$strain} = $i;
     $pm->finish( 0, \%tmplist );
@@ -996,29 +994,8 @@ Tutorials:
                           e.g. perl GSMer.pl -m mapgsm -l ecoli.list
         step 6. "blastgsm"--blast search GSMs against blast database for identity filtering
                           e.g. perl GSMer.pl -m blastgsm -l ecoli.list   
-        step 7. "checkspecificity"--filtering blast results, *.out files are generated for each strain/species
+        step 7. "checkspecificity"--filtering blast results
                           e.g. perl GSMer.pl -m checkspecificity -l ecoli.list
 ENDHELP
   exit;
-}
-
-####################################################################
-sub print_start(){
-####################################################################
-print STDOUT <<START;
-------------------------------------------------------------------------------------------------------------
-					Welcome to GSMer!
-------------------------------------------------------------------------------------------------------------
-START
-}
-
-
-####################################################################
-sub print_end(){
-####################################################################
-print STDOUT <<END;
-------------------------------------------------------------------------------------------------------------
-					Thanks for using GSMer!
-------------------------------------------------------------------------------------------------------------      
-END
 }
