@@ -440,15 +440,9 @@ sub SplitGBKByTax() {
   my $seqIO = Bio::SeqIO->new( -file => "$gbkfile", -format => "GenBank" );
   while ( my $seqobj = $seqIO->next_seq ) {
     my @organism    = $seqobj->species->classification;
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     my $strain      = $organism[ $tax - 1 ];
-=======
-    my $strain      = $organism[$tax-1];
->>>>>>> df8f82296d6a94e5ab1568870a32e2b152f72490
-=======
-    my $strain      = $organism[$tax-1];
->>>>>>> df8f82296d6a94e5ab1568870a32e2b152f72490
+
     my @strainitems = split( " ", $strain );
     my $species     = "$strainitems[0] $strainitems[1]";
     my $outgbk;
@@ -496,15 +490,7 @@ sub ReadTaxFromGBK() {
     my $seqIO    = Bio::SeqIO->new( -file => "$file", -format => "GenBank" );
     my $seqobj   = $seqIO->next_seq;
     my @organism = $seqobj->species->classification;
-<<<<<<< HEAD
-<<<<<<< HEAD
-    my $strain   = $organism[ $tax - 1 ];
-=======
     my $strain   = $organism[$tax-1];
->>>>>>> df8f82296d6a94e5ab1568870a32e2b152f72490
-=======
-    my $strain   = $organism[$tax-1];
->>>>>>> df8f82296d6a94e5ab1568870a32e2b152f72490
     my %tmplist;
     $tmplist{$strain} = $i;
     $pm->finish( 0, \%tmplist );
