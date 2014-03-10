@@ -49,6 +49,7 @@ package Configuration;
   $root_directory = ".";
   ## multi-core support
   $threads = "35";
+  $segment=1;#segment number for meryl to speed up
   ##probe length, stretch, identity etc
   #k-mer size for stretch filtering
   $k                     = 18; 
