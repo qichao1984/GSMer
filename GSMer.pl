@@ -90,7 +90,7 @@ mkdir $probedir unless ( -e $probedir );
 ##multi-threads
 #number of threads be used in the program
 my $threads = $Configuration::threads || die "Please specify threads number\n";
-
+my $segment = $Configuration::segment || die "Please specify threads number\n";
 ######################
 ##MAIN
 ######################
@@ -183,7 +183,7 @@ MAIN: {
       ##generate k-mer fasta files for each strain
       if ( !-e $outfile ) {
         &GenerateKmers( \@gbk, $outfile, "GenBank", $k, $ij );
-        &GenerateKmerDB( $outfile, $kmerdbfile, $meryl, 10, $threads, $k );
+        &GenerateKmerDB( $outfile, $kmerdbfile, $meryl, $segment, $threads, $k );
       }
       $pm->finish;
     }
@@ -241,13 +241,13 @@ MAIN: {
     ##dump k-mers with frequency>=2, i.e. showing up in two or more strains
     if ( !-e $f2kmerdbn2fa ) {
       system("$meryl -Dt -n 2 -s $f2kmerdb > $f2kmerdbn2fa");
-      &GenerateKmerDB( $f2kmerdbn2fa, $f2kmerdbn2, $meryl, 10, $threads, $k );
+      &GenerateKmerDB( $f2kmerdbn2fa, $f2kmerdbn2, $meryl, $segment, $threads, $k );
     }
 
     ##generate k-mer database for f1file that all k-mers were kept, combine with f2 kmer databse with frequency cutoffs
     if ( $inf1file ne "" ) {
       if ( !-e "$f1f2n2kmerdb.mcdat" ) {
-        &GenerateKmerDB( $inf1file, $f1kmerdb, $meryl, 10, $threads, $k );
+        &GenerateKmerDB( $inf1file, $f1kmerdb, $meryl, $segment, $threads, $k );
         system("$meryl -M add -s $f2kmerdbn2 -s $f1kmerdb -o $f1f2n2kmerdb");
       }
     }
