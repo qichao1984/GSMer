@@ -558,8 +558,10 @@ sub GenerateGSMs() {
 sub MapAndFilter() {
 ###################################################################################
   my ( $kmerdb, $infafile, $outmapfile, $outfafile, $k ) = @_;
-  system("$mapMers -m $k -mers $kmerdb -seq $infafile > $outmapfile  2>/dev/null");
-
+  system("$mapMers -regions -m $k -mers $kmerdb -seq $infafile > $outmapfile  2>/dev/null");
+  #8-17-2015
+  #system("$mapMers -m $k -mers $kmerdb -seq $infafile > $outmapfile  2>/dev/null");
+  #
   #system("$mapMers -m $k -mers $kmerdb -seq $infafile > $outmapfile");
   ##read map file
   my %map;
@@ -567,7 +569,7 @@ sub MapAndFilter() {
   while (<MAP>) {
     chomp;
     my @items = split( "\t", $_ );
-    $map{ $items[0] } = 1;
+    $map{ $items[0] } = 1 if $#items==3;
   }
   close MAP;
   ##filter mapped probe mers
